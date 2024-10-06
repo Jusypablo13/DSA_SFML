@@ -5,14 +5,12 @@
 #include <iostream>
 #include <vector>
 
-usign namespace std;
+using namespace std;
 
 class Menu {
     private:
         int selectedOption;
-        vector<sf::Text> menuOptions;
-        sf::Font font;
-    
+        vector<sf::Text> menuOptions;  
     public:
         Menu(float width, float height);
         void draw(sf::RenderWindow &window);
