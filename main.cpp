@@ -19,14 +19,14 @@ int main() {
         menu.draw(window);
         window.display();
 
-        if (menu.getSelectedOption() == 0) {  // Example for BubbleSort
+        if (menu.getSelectedOption() == 0) {  // BubbleSort
             visualizer.promptForInput();
             visualizer.executeAlgorithm("BubbleSort");
-            visualizer.showResults(window, visualizer.data, "BubbleSort");
-        } else if (menu.getSelectedOption() == 1) {  // Example for QuickSort
+            visualizer.showResults(window, visualizer.getData(), "BubbleSort");
+        } else if (menu.getSelectedOption() == 1) {  // QuickSort
             visualizer.promptForInput();
             visualizer.executeAlgorithm("QuickSort");
-            visualizer.showResults(window, visualizer.data, "QuickSort");
+            visualizer.showResults(window, visualizer.getData(), "QuickSort");
         }
     }
 
