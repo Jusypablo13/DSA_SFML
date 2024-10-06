@@ -2,6 +2,10 @@
 #include <iostream>
 #include <random>
 
+const vector<int> &AlgorithmVisualizer::getData() const {
+    return data;
+}
+
 void AlgorithmVisualizer::promptForInput(){
     int numElements;
     cout << "Enter the number of elements: ";
