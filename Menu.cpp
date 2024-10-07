@@ -41,3 +41,27 @@ void Menu::moveDown(){
 int Menu::getSelectedOption() const{
     return selectedOption; //Devuelve la opción seleccionada
 }
+
+void Menu::handleInput(sf::RenderWindow &window) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Up) {
+                moveUp();
+            } else if (event.key.code == sf::Keyboard::Down) {
+                moveDown();
+            } else if (event.key.code == sf::Keyboard::Enter) {
+                // El usuario presiona Enter para seleccionar la opción
+                int selected = getSelectedOption();
+                if (selected == 3) {  // Si selecciona "Exit"
+                    window.close();
+                }
+                // Aquí se manejarían las opciones de BubbleSort, QuickSort, etc.
+            }
+        }
+    }
+}

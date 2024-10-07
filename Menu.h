@@ -12,12 +12,14 @@ class Menu {
         int selectedOption;
         sf::Font font;
         vector<sf::Text> menuOptions;  
+    
     public:
         Menu(float width, float height);
         void draw(sf::RenderWindow &window);
         void moveUp();
         void moveDown();
         int getSelectedOption() const;
+        void handleInput(sf::RenderWindow &window);
 };
 
 
