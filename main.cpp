@@ -27,8 +27,10 @@ int main() {
                 visualizer.executeAlgorithm("QuickSort");
                 visualizer.showResults(window, visualizer.getData(), "QuickSort");
                 inMenu = true;
-            } else if (selectedOption == 2) {  // MergeSort (por implementar)
-                // Implementar MergeSort aquí
+            } else if (selectedOption == 2) {  // MergeSort
+                visualizer.promptForInput(window);
+                visualizer.executeAlgorithm("MergeSort");
+                visualizer.showResults(window, visualizer.getData(), "MergeSort");
                 inMenu = true;
             } else if (selectedOption == 3) {  // Salir
                 window.close();
