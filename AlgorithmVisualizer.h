@@ -18,7 +18,7 @@ class AlgorithmVisualizer {
         Statistics stats;
     
     public:
-        const vector<int> &getData() const { return data;}
+        const vector<int> &getData() const; 
         void promptForInput();
         void displayInputData(sf::RenderWindow &window, const vector<int> &data);
         void executeAlgorithm(const string &algorithmName);
