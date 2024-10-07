@@ -8,10 +8,10 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
     font.loadFromFile("arial.ttf");
 
     // Obtener el número de elementos
-    sf::Text prompt("Ingresa el número de elementos:", font, 24);
+    sf::Text prompt("Ingresa el numero de elementos:", font, 24);
     prompt.setPosition(50, 50);
 
-    sf::Text inputText("", font, 24);
+    sf::Text inputText("_", font, 24);
     inputText.setPosition(50, 100);
 
     string userInput;
@@ -48,12 +48,12 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
         window.display();
     }
 
-    // Convertir el texto ingresado a un entero
+    // Convertir el texto a entero
     stringstream ss(userInput);
     int numElements;
     ss >> numElements;
 
-    // Permitir al usuario ingresar cada valor
+    // Permitir al usuario ingresar valor
     data.clear();
     for (int i = 0; i < numElements; ++i) {
         userInput = "";
@@ -120,6 +120,8 @@ void AlgorithmVisualizer::executeAlgorithm(const string &algorithmName){
         algorithm = new BubbleSort();
     } else if (algorithmName == "QuickSort"){
         algorithm = new QuickSort();
+    } else if (algorithmName == "MergeSort"){
+        algorithm = new MergeSort();
     }
 
     if (algorithm) {
