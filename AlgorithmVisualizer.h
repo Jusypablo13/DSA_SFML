@@ -18,11 +18,11 @@ class AlgorithmVisualizer {
         Statistics stats;
     
     public:
-        const vector<int> &getData() const; 
         void promptForInput();
         void displayInputData(sf::RenderWindow &window, const vector<int> &data);
         void executeAlgorithm(const string &algorithmName);
         void showResults(sf::RenderWindow &window, const vector<int> &data, const string &algorithmName);
+        const vector<int> &getData() const; 
 };
 
 #endif // ALGORITHMVISUALIZER_H

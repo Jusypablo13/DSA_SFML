@@ -1,22 +1,57 @@
 #include "AlgorithmVisualizer.h"
 #include <iostream>
-#include <random>
+#include <sstream>
 
-const vector<int> &AlgorithmVisualizer::getData() const {
-    return data;
-}
+void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+    
+    sf::Text prompt("Enter the number of elements:", font, 24);
+    prompt.setPosition(50, 50);
+    
+    sf::Text inputText("", font, 24);
+    inputText.setPosition(50, 100);
 
-void AlgorithmVisualizer::promptForInput(){
+    string userInput;
+    bool inputComplete = false;
+
+    while (window.isOpen() && !inputComplete) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode == '\b' && userInput.size() > 0) {
+                    userInput.pop_back();  // Borrar el último carácter si se presiona retroceso
+                } else if (event.text.unicode >= '0' && event.text.unicode <= '9') {
+                    userInput += static_cast<char>(event.text.unicode);  // Agregar dígito al texto
+                }
+            }
+
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+                inputComplete = true;
+            }
+        }
+
+        window.clear();
+        window.draw(prompt);
+        
+        inputText.setString(userInput);
+        window.draw(inputText);
+
+        window.display();
+    }
+
+    // Convertir el texto ingresado a un entero
+    stringstream ss(userInput);
     int numElements;
-    cout << "Enter the number of elements: ";
-    cin >> numElements;
+    ss >> numElements;
 
-    data.clear(); //Para evitar que se acumulen los datos
-    for(int i = 0; i < numElements; i++){
-        int value;
-        cout << "Enter element " << i + 1 << ": ";
-        cin >> value;
-        data.push_back(value);
+    data.clear();
+    for (int i = 0; i < numElements; ++i) {
+        // Generar elementos aleatorios para el ejemplo
+        data.push_back(rand() % 100);
     }
 }
 
@@ -62,4 +97,8 @@ void AlgorithmVisualizer::showResults(sf::RenderWindow &window, const vector<int
     } else {
         delete algorithm;
     }
+}
+
+const vector<int> &AlgorithmVisualizer::getData() const {
+    return data;
 }
