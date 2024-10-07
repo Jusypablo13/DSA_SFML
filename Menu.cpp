@@ -1,45 +1,44 @@
 #include "Menu.h"
-using namespace std;
 
-Menu::Menu(float width, float height){
+Menu::Menu(float width, float height) {
     selectedOption = 0;
-    if(font.loadFromFile("arial.ttf")){
-        vector<string> options = {"BubbleSort", "QuickSort", "MergeSort", "Exit"}; //Opciones del menú
-        for(int i = 0; i< options.size(); i++){
-            sf::Text text; //Crea un objeto de texto
-            text.setFont(font); //Asigna la fuente al texto
-            text.setString(options[i]); //Asigna el texto a la opción
-            text.setPosition(sf::Vector2f(width/2, height/(options.size() + 1) * (i+1))); //Hace que los textos estén centrados
-            menuOptions.push_back(text); //Añade el texto al vector de opciones
+    if (font.loadFromFile("arial.ttf")) {
+        vector<string> options = {"BubbleSort", "QuickSort", "MergeSort", "Exit"};
+        for (int i = 0; i < options.size(); i++) {
+            sf::Text text;
+            text.setFont(font);
+            text.setString(options[i]);
+            text.setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * (i + 1)));
+            menuOptions.push_back(text);
         }
     }
 }
 
-void Menu::draw(sf::RenderWindow &window){
-    for(int i = 0; i < menuOptions.size(); i++){
-        if(i == selectedOption){
-            menuOptions[i].setFillColor(sf::Color::Red); //Si la opción está seleccionada, se pone en rojo
+void Menu::draw(sf::RenderWindow &window) {
+    for (int i = 0; i < menuOptions.size(); i++) {
+        if (i == selectedOption) {
+            menuOptions[i].setFillColor(sf::Color::Red);  // Opción seleccionada en rojo
         } else {
-            menuOptions[i].setFillColor(sf::Color::White); //Si no, se pone en blanco
+            menuOptions[i].setFillColor(sf::Color::White);  // Opción no seleccionada en blanco
         }
-        window.draw(menuOptions[i]); //Dibuja la opción
+        window.draw(menuOptions[i]);  // Dibuja la opción
     }
 }
 
-void Menu::moveUp(){
-    if (selectedOption > 0){
-        selectedOption--; //Si la opción seleccionada no es la primera, se mueve hacia arriba
+void Menu::moveUp() {
+    if (selectedOption > 0) {
+        selectedOption--;
     }
 }
 
-void Menu::moveDown(){
-    if (selectedOption < menuOptions.size() - 1){
-        selectedOption++; //Si la opción seleccionada no es la última, se mueve hacia abajo
+void Menu::moveDown() {
+    if (selectedOption < menuOptions.size() - 1) {
+        selectedOption++;
     }
 }
 
-int Menu::getSelectedOption() const{
-    return selectedOption; //Devuelve la opción seleccionada
+int Menu::getSelectedOption() const {
+    return selectedOption;
 }
 
 void Menu::handleInput(sf::RenderWindow &window) {
@@ -49,18 +48,43 @@ void Menu::handleInput(sf::RenderWindow &window) {
             window.close();
         }
 
+        // Maneja teclas de flecha para moverse por el menú
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Up) {
                 moveUp();
             } else if (event.key.code == sf::Keyboard::Down) {
                 moveDown();
             } else if (event.key.code == sf::Keyboard::Enter) {
-                // El usuario presiona Enter para seleccionar la opción
+                // El usuario ha presionado Enter para seleccionar la opción actual
                 int selected = getSelectedOption();
-                if (selected == 3) {  // Si selecciona "Exit"
+                if (selected == 0) {
+                    // BubbleSort seleccionado
+                    // Ejecutar la lógica para BubbleSort
+                } else if (selected == 1) {
+                    // QuickSort seleccionado
+                    // Ejecutar la lógica para QuickSort
+                } else if (selected == 2) {
+                    // MergeSort seleccionado
+                    // Ejecutar la lógica para MergeSort
+                } else if (selected == 3) {
+                    // Exit seleccionado
                     window.close();
                 }
-                // Aquí se manejarían las opciones de BubbleSort, QuickSort, etc.
+            }
+        }
+
+        // Manejar selección directa con teclas específicas (B para BubbleSort, Q para QuickSort, etc.)
+        if (event.type == sf::Event::TextEntered) {
+            char inputChar = static_cast<char>(event.text.unicode);
+            inputChar = tolower(inputChar);  // Convierte la entrada a minúscula
+            if (inputChar == 'b') {
+                selectedOption = 0;  // Selecciona BubbleSort
+            } else if (inputChar == 'q') {
+                selectedOption = 1;  // Selecciona QuickSort
+            } else if (inputChar == 'm') {
+                selectedOption = 2;  // Selecciona MergeSort
+            } else if (inputChar == 'e') {
+                selectedOption = 3;  // Selecciona Exit
             }
         }
     }
