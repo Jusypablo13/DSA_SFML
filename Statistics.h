@@ -2,6 +2,7 @@
 #define STATISTICS_H
 
 #include <chrono>
+#include <string>
 
 using namespace std;
 using namespace chrono;
@@ -15,7 +16,7 @@ class Statistics{
         void startTimer();
         void stopTimer();
         double getExecutionTime() const;
-        void displayComplexity(const string &algorithm) const;
+        string getComplexity(const string &algorithm) const;
 };
 
 #endif // STATISTICS_H

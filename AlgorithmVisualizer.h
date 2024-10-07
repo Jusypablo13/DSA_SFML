@@ -14,7 +14,7 @@ using namespace std;
 class AlgorithmVisualizer {
     private:
         vector<int> data;
-        Algorithm *algorithm = nullptr; //Por defecto no se ha seleccionado ningún algoritmo
+        Algorithm *algorithm = nullptr;
         Statistics stats;
     
     public:
