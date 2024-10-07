@@ -7,6 +7,7 @@ using namespace std;
 
 class Algorithm{
     public:
+        virtual ~Algorithm() = default; 
         virtual void sort(vector<int> &data) = 0;
 };
 
