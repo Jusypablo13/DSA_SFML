@@ -1,5 +1,7 @@
 #include "Statistics.h"
 #include <iostream>
+using namespace std;
+using namespace std::chrono;
 
 void Statistics::startTimer() {
     startTime = high_resolution_clock::now();
@@ -10,17 +12,17 @@ void Statistics::stopTimer() {
 }
 
 double Statistics::getExecutionTime() const {
-    duration<double> time_span = duration_cast<duration<double>>(endTime - startTime);
-    return time_span.count();
+    duration<double> executionTime = duration_cast<duration<double>>(endTime - startTime);
+    return executionTime.count();
 }
 
-void Statistics::displayComplexity(const string &algorithm) const {
+void Statistics::displayComplexity(const string& algorithm) const {
     if (algorithm == "BubbleSort") {
-        cout << "Time complexity of BubbleSort is O(n^2)" << endl;
-        cout << "Space complexity of BubbleSort is O(1)" << endl;
+        cout << "Time Complexity: O(n^2)" << endl;
+        cout << "Space Complexity: O(1)" << endl;
     } else if (algorithm == "QuickSort") {
-        cout << "Time complexity of QuickSort is O(n log n), O(n^2) worst case scenario" << endl;
-        cout << "Space complexity of QuickSort is O(log n)" << endl;
+        cout << "Time Complexity: O(n log n) on average, O(n^2) worst case" << endl;
+        cout << "Space Complexity: O(log n)" << endl;
     }
-    //Continuar en futuro con más algoritmos ...
+    //Continuar con más ...
 }
