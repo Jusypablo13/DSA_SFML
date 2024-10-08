@@ -20,6 +20,8 @@ string Statistics::getComplexity(const string& algorithm) const {
         return "Complejidad Temporal: O(n log n) en promedio\nComplejidad Espacial: O(log n)";
     } else if (algorithm == "MergeSort") {
         return "Complejidad Temporal: O(n log n)\nComplejidad Espacial: O(n)";
+    } else if (algorithm == "BinarySearch") {
+        return "Complejidad Temporal: O(log n)\nComplejidad Espacial: O(1)";
     }
     // Añadir más algoritmos
     return "";

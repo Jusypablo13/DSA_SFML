@@ -3,7 +3,7 @@
 Menu::Menu(float width, float height) {
     selectedOption = 0;
     if (font.loadFromFile("arial.ttf")) {
-        vector<string> options = {"BubbleSort", "QuickSort", "MergeSort", "Salir"};
+        vector<string> options = {"BubbleSort", "QuickSort", "MergeSort", "BinarySearch", "Salir"};
         for (int i = 0; i < options.size(); i++) {
             sf::Text text;
             text.setFont(font);

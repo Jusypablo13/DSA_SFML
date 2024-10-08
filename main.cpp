@@ -32,7 +32,11 @@ int main() {
                 visualizer.executeAlgorithm("MergeSort");
                 visualizer.showResults(window, visualizer.getData(), "MergeSort");
                 inMenu = true;
-            } else if (selectedOption == 3) {  // Salir
+            } else if (selectedOption == 3) {  // BinarySearch
+                visualizer.promptForInput(window);
+                visualizer.executeBinarySearch(window);
+                inMenu = true;
+            } else if (selectedOption == 4) {  // Salir
                 window.close();
             }
         }

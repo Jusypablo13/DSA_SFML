@@ -122,6 +122,8 @@ void AlgorithmVisualizer::executeAlgorithm(const string &algorithmName){
         algorithm = new QuickSort();
     } else if (algorithmName == "MergeSort"){
         algorithm = new MergeSort();
+    } else if (algorithmName == "BinarySearch"){
+        algorithm = new BinarySearch();
     }
 
     if (algorithm) {
@@ -184,4 +186,107 @@ void AlgorithmVisualizer::showResults(sf::RenderWindow &window, const vector<int
 
 const vector<int> &AlgorithmVisualizer::getData() const {
     return data;
+}
+
+void AlgorithmVisualizer::executeBinarySearch(sf::RenderWindow &window) {
+    // Asegurarse de que los datos estén ordenados
+    std::sort(data.begin(), data.end());
+
+    // Mostrar los datos ordenados
+    displayInputData(window, data);
+
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+
+    // Solicitar al usuario el valor a buscar
+    sf::Text prompt("Ingresa el valor a buscar:", font, 24);
+    prompt.setPosition(50, 50);
+
+    sf::Text inputText("", font, 24);
+    inputText.setPosition(50, 100);
+
+    std::string userInput;
+    bool inputComplete = false;
+
+    while (window.isOpen() && !inputComplete) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode == '\b' && userInput.size() > 0) {
+                    userInput.pop_back();
+                } else if ((event.text.unicode >= '0' && event.text.unicode <= '9') || event.text.unicode == '-') {
+                    userInput += static_cast<char>(event.text.unicode);
+                }
+            }
+
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+                if (!userInput.empty()) {
+                    inputComplete = true;
+                }
+            }
+        }
+
+        window.clear();
+        displayInputData(window, data);
+
+        window.draw(prompt);
+        inputText.setString(userInput);
+        window.draw(inputText);
+
+        window.display();
+    }
+
+    // Convertir el texto ingresado a un entero
+    std::stringstream ss(userInput);
+    int targetValue;
+    ss >> targetValue;
+
+    // Ejecutar la búsqueda binaria
+    stats.startTimer();
+    int index = binarySearch.search(data, targetValue);
+    stats.stopTimer();
+
+    // Mostrar el resultado
+    sf::Text resultText("", font, 24);
+    if (index != -1) {
+        resultText.setString("Valor encontrado en el índice: " + std::to_string(index));
+    } else {
+        resultText.setString("Valor no encontrado");
+    }
+    resultText.setPosition(50, 150);
+
+    sf::Text executionTimeText("Tiempo de ejecución: " + std::to_string(stats.getExecutionTime()) + " segundos", font, 24);
+    executionTimeText.setPosition(50, 180);
+
+    sf::Text complexityText(stats.getComplexity("BinarySearch"), font, 24);
+    complexityText.setPosition(50, 210);
+
+    sf::Text continueText("Presiona cualquier tecla para regresar al menú", font, 24);
+    continueText.setPosition(50, 240);
+
+    bool waiting = true;
+    while (window.isOpen() && waiting) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::KeyPressed) {
+                waiting = false;
+            }
+        }
+
+        window.clear();
+        displayInputData(window, data);
+        window.draw(resultText);
+        window.draw(executionTimeText);
+        window.draw(complexityText);
+        window.draw(continueText);
+        window.display();
+    }
 }
