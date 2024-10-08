@@ -122,9 +122,7 @@ void AlgorithmVisualizer::executeAlgorithm(const string &algorithmName){
         algorithm = new QuickSort();
     } else if (algorithmName == "MergeSort"){
         algorithm = new MergeSort();
-    } else if (algorithmName == "BinarySearch"){
-        algorithm = new BinarySearch();
-    }
+    } 
 
     if (algorithm) {
         stats.startTimer();
@@ -189,7 +187,7 @@ const vector<int> &AlgorithmVisualizer::getData() const {
 }
 
 void AlgorithmVisualizer::executeBinarySearch(sf::RenderWindow &window) {
-    // Asegurarse de que los datos estén ordenados
+    // Ordenar los datos antes de la búsqueda
     std::sort(data.begin(), data.end());
 
     // Mostrar los datos ordenados

@@ -16,17 +16,17 @@ using namespace std;
 class AlgorithmVisualizer {
     private:
         vector<int> data;
-        Algorithm *algorithm = nullptr;
+        Algorithm *algorithm = nullptr; // Solo para algoritmos de ordenamiento
+        BinarySearch binarySearch;      // Objeto para búsqueda binaria
         Statistics stats;
-        BinarySearch binarySearch;
-    
+
     public:
         void promptForInput(sf::RenderWindow &window);
         void displayInputData(sf::RenderWindow &window, const vector<int> &data);
         void executeAlgorithm(const string &algorithmName);
+        void executeBinarySearch(sf::RenderWindow &window); // Nueva función
         void showResults(sf::RenderWindow &window, const vector<int> &data, const string &algorithmName);
-        const vector<int> &getData() const; 
-        void executeBinarySearch(sf::RenderWindow &window);
+        const vector<int> &getData() const;
 };
 
 #endif // ALGORITHMVISUALIZER_H
