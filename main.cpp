@@ -75,6 +75,8 @@ int main() {
                                         } else if (searchIndex == 2) {
                                             searchRunning = false;
                                         }
+                                    } else if (event.key.code == sf::Keyboard::Escape) {
+                                        searchRunning = false;
                                     }
                                 }
                             }
@@ -106,6 +108,8 @@ int main() {
                                         } else if (sortingIndex == 5) {
                                             sortingRunning = false;
                                         }
+                                    } else if (event.key.code == sf::Keyboard::Escape) {
+                                        sortingRunning = false;
                                     }
                                 }
                             }
@@ -133,6 +137,8 @@ int main() {
                                         } else if (structuresIndex == 3) {
                                             structuresRunning = false;
                                         }
+                                    } else if (event.key.code == sf::Keyboard::Escape) {
+                                        structuresRunning = false;
                                     }
                                 }
                             }

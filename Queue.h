@@ -6,10 +6,11 @@
 
 class Queue {
 public:
+    void interactiveMode(sf::RenderWindow &window, const sf::Font &font);
     void enqueue(int value);
     void dequeue();
-    void draw(sf::RenderWindow &window, sf::Font &font);
-    void interactiveMode(sf::RenderWindow &window, sf::Font &font);
+    void draw(sf::RenderWindow &window, const sf::Font &font) const;
+    bool isEmpty() const;
 
 private:
     std::vector<int> data;

@@ -1,5 +1,72 @@
 #include "Queue.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
+void Queue::interactiveMode(sf::RenderWindow &window, const sf::Font &font) {
+    bool running = true;
+    std::string userInput;
+    sf::Text instructions("Press A to Add, R to Remove, Esc to Exit.", font, 20);
+    instructions.setPosition(10, 10);
+    instructions.setFillColor(sf::Color::White);
+
+    sf::Text inputText("", font, 20);
+    inputText.setPosition(10, 40);
+    inputText.setFillColor(sf::Color::Yellow);
+
+    sf::Text errorText("", font, 20);
+    errorText.setPosition(10, 70);
+    errorText.setFillColor(sf::Color::Red);
+
+    while (running && window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    running = false;
+                } else if (event.key.code == sf::Keyboard::A) {
+                    if (!userInput.empty() && std::all_of(userInput.begin(), userInput.end(), ::isdigit)) {
+                        int value = std::stoi(userInput);
+                        enqueue(value);
+                        userInput.clear();
+                        errorText.setString(""); // Limpia cualquier mensaje de error
+                    } else {
+                        errorText.setString("Invalid input. Please enter a number.");
+                    }
+                } else if (event.key.code == sf::Keyboard::R) {
+                    if (!isEmpty()) {
+                        dequeue();
+                        errorText.setString(""); // Limpia cualquier mensaje de error
+                    } else {
+                        errorText.setString("The queue is empty. Cannot remove.");
+                    }
+                }
+            }
+
+            if (event.type == sf::Event::TextEntered) {
+                if (event.text.unicode == '\b' && !userInput.empty()) {
+                    userInput.pop_back();
+                } else if (event.text.unicode >= 32 && event.text.unicode < 128) {
+                    char enteredChar = static_cast<char>(event.text.unicode);
+                    if (isdigit(enteredChar) || (enteredChar == '-' && userInput.empty())) {
+                        userInput += enteredChar;
+                    }
+                }
+            }
+        }
+
+        inputText.setString("Input: " + userInput);
+
+        window.clear();
+        draw(window, font);
+        window.draw(instructions);
+        window.draw(inputText);
+        window.draw(errorText);
+        window.display();
+    }
+}
 
 void Queue::enqueue(int value) {
     data.push_back(value);
@@ -11,67 +78,25 @@ void Queue::dequeue() {
     }
 }
 
-void Queue::draw(sf::RenderWindow &window, sf::Font &font) {
-    float x = 50.0f, y = 400.0f;
+bool Queue::isEmpty() const {
+    return data.empty();
+}
+
+void Queue::draw(sf::RenderWindow &window, const sf::Font &font) const {
+    float x = 50;
+    float y = 100;
 
     for (const auto &value : data) {
-        drawBlock(window, font, value, x, y);
-        x += 100.0f; // Space between blocks
-    }
-}
+        sf::RectangleShape block(sf::Vector2f(100, 50));
+        block.setPosition(x, y);
+        block.setFillColor(sf::Color::Red);
 
-void Queue::drawBlock(sf::RenderWindow &window, sf::Font &font, int value, float x, float y) {
-    sf::RectangleShape rect(sf::Vector2f(80, 40));
-    rect.setFillColor(sf::Color::White);
-    rect.setOutlineColor(sf::Color::Black);
-    rect.setOutlineThickness(2);
-    rect.setPosition(x, y);
+        sf::Text blockText(std::to_string(value), font, 20);
+        blockText.setPosition(x + 25, y + 10);
 
-    sf::Text text(std::to_string(value), font, 20);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(x + 20, y + 5);
+        window.draw(block);
+        window.draw(blockText);
 
-    window.draw(rect);
-    window.draw(text);
-}
-
-void Queue::interactiveMode(sf::RenderWindow &window, sf::Font &font) {
-    std::string input;
-    sf::Text prompt("", font, 20);
-    prompt.setFillColor(sf::Color::White);
-    prompt.setPosition(50, 50);
-
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-
-            if (event.type == sf::Event::TextEntered) {
-                if (std::isdigit(event.text.unicode) || event.text.unicode == '-') {
-                    input += static_cast<char>(event.text.unicode);
-                } else if (event.text.unicode == '\b' && !input.empty()) {
-                    input.pop_back();
-                }
-            }
-
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Enter) {
-                    if (!input.empty()) {
-                        enqueue(std::stoi(input));
-                        input.clear();
-                    }
-                } else if (event.key.code == sf::Keyboard::BackSpace) {
-                    dequeue();
-                }
-            }
-        }
-
-        window.clear();
-        draw(window, font);
-        prompt.setString("Enter a number to enqueue: " + input + " (Press Backspace to dequeue)");
-        window.draw(prompt);
-        window.display();
+        x += 120;
     }
 }

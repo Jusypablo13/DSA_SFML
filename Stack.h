@@ -6,10 +6,11 @@
 
 class Stack {
 public:
+    void interactiveMode(sf::RenderWindow &window, const sf::Font &font);
     void push(int value);
     void pop();
-    void draw(sf::RenderWindow &window, sf::Font &font);
-    void interactiveMode(sf::RenderWindow &window, sf::Font &font);
+    void draw(sf::RenderWindow &window, const sf::Font &font) const;
+    bool isEmpty() const;
 
 private:
     std::vector<int> data;
