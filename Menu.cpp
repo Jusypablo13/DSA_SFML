@@ -1,42 +1,36 @@
 #include "Menu.h"
 
 Menu::Menu(const std::vector<std::string>& options, float width, float height)
-    : selectedOption(0), width(width), height(height) {
-    font.loadFromFile("arial.ttf");
+    : options(options), selectedIndex(0) {
+    font.loadFromFile("Arial.ttf");
+    menuText.setFont(font);
+    menuText.setCharacterSize(24);
+    menuText.setFillColor(sf::Color::White);
+    menuText.setPosition(width / 4, height / 4);
+}
 
+void Menu::draw(sf::RenderWindow& window, const sf::Font& font) {
     for (size_t i = 0; i < options.size(); ++i) {
-        sf::Text text;
-        text.setFont(font);
-        text.setString(options[i]);
-        text.setCharacterSize(30);
-        text.setFillColor(i == 0 ? sf::Color::Red : sf::Color::White);
-        text.setPosition(width / 2 - 100, height / (options.size() + 1) * (i + 1));
-        menuOptions.push_back(text);
+        menuText.setString(options[i]);
+        menuText.setFont(font); // Se asegura de usar la fuente proporcionada
+        menuText.setFillColor(i == selectedIndex ? sf::Color::Red : sf::Color::White);
+        menuText.setPosition(200, 100 + i * 50);
+        window.draw(menuText);
     }
 }
 
 void Menu::moveUp() {
-    if (selectedOption - 1 >= 0) {
-        menuOptions[selectedOption].setFillColor(sf::Color::White);
-        selectedOption--;
-        menuOptions[selectedOption].setFillColor(sf::Color::Red);
+    if (selectedIndex > 0) {
+        selectedIndex--;
     }
 }
 
 void Menu::moveDown() {
-    if (selectedOption + 1 < menuOptions.size()) {
-        menuOptions[selectedOption].setFillColor(sf::Color::White);
-        selectedOption++;
-        menuOptions[selectedOption].setFillColor(sf::Color::Red);
+    if (selectedIndex < options.size() - 1) {
+        selectedIndex++;
     }
 }
 
-int Menu::getSelectedOption() const {
-    return selectedOption;
-}
-
-void Menu::draw(sf::RenderWindow& window) {
-    for (const auto& option : menuOptions) {
-        window.draw(option);
-    }
+int Menu::getSelectedIndex() const {
+    return selectedIndex;
 }

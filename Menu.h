@@ -6,19 +6,18 @@
 #include <string>
 
 class Menu {
+private:
+    std::vector<std::string> options;
+    sf::Text menuText;
+    sf::Font font;
+    int selectedIndex;
+
 public:
     Menu(const std::vector<std::string>& options, float width, float height);
-
+    void draw(sf::RenderWindow& window, const sf::Font& font); // Ahora acepta font como parámetro
     void moveUp();
     void moveDown();
-    int getSelectedOption() const;
-    void draw(sf::RenderWindow& window);
-
-private:
-    std::vector<sf::Text> menuOptions;
-    sf::Font font;
-    int selectedOption;
-    float width, height;
+    int getSelectedIndex() const;
 };
 
-#endif
+#endif // MENU_H

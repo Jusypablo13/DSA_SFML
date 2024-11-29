@@ -1,4 +1,5 @@
 #include "AlgorithmVisualizer.h"
+#include "Menu.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <sstream>
@@ -8,11 +9,8 @@
 
 using namespace std;
 
-void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
+void AlgorithmVisualizer::promptForInput(sf::RenderWindow& window, sf::Font& font) {
     data.clear();
-
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
 
     sf::Text prompt("Enter number of elements:", font, 24);
     prompt.setPosition(50, 50);
@@ -23,7 +21,6 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
     string userInput;
     bool inputComplete = false;
 
-    // Paso 1: Solicitar la cantidad de elementos
     while (window.isOpen() && !inputComplete) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -32,7 +29,7 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
             }
 
             if (event.type == sf::Event::TextEntered) {
-                if (event.text.unicode == '\b' && !userInput.empty()) {  // Borrar carácter
+                if (event.text.unicode == '\b' && !userInput.empty()) {
                     userInput.pop_back();
                 } else if (isdigit(event.text.unicode)) {
                     userInput += static_cast<char>(event.text.unicode);
@@ -55,7 +52,6 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
 
     int numElements = stoi(userInput);
 
-    // Paso 2: Solicitar cada número
     for (int i = 0; i < numElements; ++i) {
         userInput.clear();
         inputComplete = false;
@@ -71,9 +67,9 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
                 }
 
                 if (event.type == sf::Event::TextEntered) {
-                    if (event.text.unicode == '\b' && !userInput.empty()) {  // Borrar carácter
+                    if (event.text.unicode == '\b' && !userInput.empty()) {
                         userInput.pop_back();
-                    } else if (isdigit(event.text.unicode) || event.text.unicode == '-') {  // Números o negativos
+                    } else if (isdigit(event.text.unicode) || event.text.unicode == '-') {
                         userInput += static_cast<char>(event.text.unicode);
                     }
                 }
@@ -85,7 +81,6 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
                 }
             }
 
-            // Mostrar el número en tiempo real
             window.clear();
             window.draw(elementPrompt);
             inputText.setString(userInput);
@@ -94,17 +89,11 @@ void AlgorithmVisualizer::promptForInput(sf::RenderWindow &window) {
         }
 
         data.push_back(stoi(userInput));
-
-        // Mostrar la lista actualizada
         displayArray(window, data);
         this_thread::sleep_for(chrono::milliseconds(500));
     }
 }
-
-int AlgorithmVisualizer::promptForTarget(sf::RenderWindow &window) {
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
+int AlgorithmVisualizer::promptForTarget(sf::RenderWindow& window, sf::Font& font) {
     sf::Text prompt("Enter value to search:", font, 24);
     prompt.setPosition(50, 50);
 
@@ -157,6 +146,80 @@ void AlgorithmVisualizer::displayArray(sf::RenderWindow &window, const vector<in
         xPos += 40.0f;
     }
     window.display();
+}
+
+void AlgorithmVisualizer::runSearchAlgorithms(sf::RenderWindow& window,  sf::Font& font) {
+    std::vector<std::string> searchOptions = {"Linear Search", "Binary Search", "Back"};
+    Menu searchMenu(searchOptions, window.getSize().x, window.getSize().y);
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Up) {
+                    searchMenu.moveUp();
+                } else if (event.key.code == sf::Keyboard::Down) {
+                    searchMenu.moveDown();
+                } else if (event.key.code == sf::Keyboard::Enter) {
+                    int selectedIndex = searchMenu.getSelectedIndex();
+                    if (selectedIndex == 0) {
+                        // Ejecuta Linear Search
+                    } else if (selectedIndex == 1) {
+                        // Ejecuta Binary Search
+                    } else if (selectedIndex == 2) {
+                        return; // Regresa al menú principal
+                    }
+                }
+            }
+        }
+
+        window.clear();
+        searchMenu.draw(window, font);
+        window.display();
+    }
+}
+
+void AlgorithmVisualizer::runSortingAlgorithms(sf::RenderWindow& window, const sf::Font& font) {
+    std::vector<std::string> sortingOptions = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Back"};
+    Menu sortingMenu(sortingOptions, window.getSize().x, window.getSize().y);
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Up) {
+                    sortingMenu.moveUp();
+                } else if (event.key.code == sf::Keyboard::Down) {
+                    sortingMenu.moveDown();
+                } else if (event.key.code == sf::Keyboard::Enter) {
+                    int selectedIndex = sortingMenu.getSelectedIndex();
+                    if (selectedIndex == 0) {
+                        // Ejecuta Bubble Sort
+                    } else if (selectedIndex == 1) {
+                        // Ejecuta Selection Sort
+                    } else if (selectedIndex == 2) {
+                        // Ejecuta Insertion Sort
+                    } else if (selectedIndex == 3) {
+                        // Ejecuta Merge Sort
+                    } else if (selectedIndex == 4) {
+                        // Ejecuta Quick Sort
+                    } else if (selectedIndex == 5) {
+                        return; // Regresa al menú principal
+                    }
+                }
+            }
+        }
+
+        window.clear();
+        sortingMenu.draw(window, font);
+        window.display();
+    }
 }
 
 #include "SearchAndSortMethods.cpp"

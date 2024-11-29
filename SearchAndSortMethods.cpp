@@ -11,12 +11,9 @@
 
 using namespace std;
 
-void AlgorithmVisualizer::runLinearSearch(sf::RenderWindow& window) {
-    promptForInput(window);
-    int target = promptForTarget(window);
-
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
+void AlgorithmVisualizer::runLinearSearch(sf::RenderWindow& window, sf::Font& font) {
+    promptForInput(window, font);
+    int target = promptForTarget(window, font);
 
     sf::Text prompt("Linear Search", font, 24);
     prompt.setPosition(50, 50);
@@ -29,36 +26,25 @@ void AlgorithmVisualizer::runLinearSearch(sf::RenderWindow& window) {
             found = true;
             break;
         }
-        this_thread::sleep_for(chrono::milliseconds(200));
+        this_thread::sleep_for(chrono::milliseconds(500));
     }
     stats.stopTimer();
 
     sf::Text result(found ? "Element found." : "Element not found.", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n), Space Complexity: O(1)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(prompt);
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
 
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runBinarySearch(sf::RenderWindow& window) {
-    promptForInput(window);
+void AlgorithmVisualizer::runBinarySearch(sf::RenderWindow& window, sf::Font& font) {
+    promptForInput(window, font);
     sort(data.begin(), data.end());
-    int target = promptForTarget(window);
-
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
+    int target = promptForTarget(window, font);
 
     sf::Text prompt("Binary Search", font, 24);
     prompt.setPosition(50, 50);
@@ -77,160 +63,102 @@ void AlgorithmVisualizer::runBinarySearch(sf::RenderWindow& window) {
         } else {
             right = mid - 1;
         }
-        this_thread::sleep_for(chrono::milliseconds(200));
+        this_thread::sleep_for(chrono::milliseconds(500));
     }
     stats.stopTimer();
 
     sf::Text result(found ? "Element found." : "Element not found.", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(log n), Space Complexity: O(1)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(prompt);
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
 
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runBubbleSort(sf::RenderWindow& window) {
+void AlgorithmVisualizer::runBubbleSort(sf::RenderWindow& window, sf::Font& font) {
     BubbleSort bubbleSort;
-    promptForInput(window);
+    promptForInput(window, font);
+
     stats.startTimer();
     bubbleSort.sortWithVisualization(data, window, *this);
     stats.stopTimer();
 
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
     sf::Text result("Bubble Sort Complete!", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n^2), Space Complexity: O(1)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runSelectionSort(sf::RenderWindow& window) {
+void AlgorithmVisualizer::runSelectionSort(sf::RenderWindow& window, sf::Font& font) {
     SelectionSort selectionSort;
-    promptForInput(window);
+    promptForInput(window, font);
+
     stats.startTimer();
     selectionSort.sortWithVisualization(data, window, *this);
     stats.stopTimer();
 
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
     sf::Text result("Selection Sort Complete!", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n^2), Space Complexity: O(1)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runInsertionSort(sf::RenderWindow& window) {
+void AlgorithmVisualizer::runInsertionSort(sf::RenderWindow& window, sf::Font& font) {
     InsertionSort insertionSort;
-    promptForInput(window);
+    promptForInput(window, font);
+
     stats.startTimer();
     insertionSort.sortWithVisualization(data, window, *this);
     stats.stopTimer();
 
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
     sf::Text result("Insertion Sort Complete!", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n^2), Space Complexity: O(1)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runMergeSort(sf::RenderWindow& window) {
+void AlgorithmVisualizer::runMergeSort(sf::RenderWindow& window, sf::Font& font) {
     MergeSort mergeSort;
-    promptForInput(window);
+    promptForInput(window, font);
+
     stats.startTimer();
     mergeSort.sortWithVisualization(data, window, *this);
     stats.stopTimer();
 
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
     sf::Text result("Merge Sort Complete!", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n log n), Space Complexity: O(n)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
 
-void AlgorithmVisualizer::runQuickSort(sf::RenderWindow& window) {
+void AlgorithmVisualizer::runQuickSort(sf::RenderWindow& window, sf::Font& font) {
     QuickSort quickSort;
-    promptForInput(window);
+    promptForInput(window, font);
+
     stats.startTimer();
     quickSort.sortWithVisualization(data, window, *this);
     stats.stopTimer();
 
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-
     sf::Text result("Quick Sort Complete!", font, 24);
     result.setPosition(50, 500);
 
-    sf::Text executionTime("Execution Time: " + to_string(stats.getExecutionTime()) + " seconds", font, 24);
-    executionTime.setPosition(50, 530);
-
-    sf::Text complexity("Time Complexity: O(n log n), Space Complexity: O(log n)", font, 24);
-    complexity.setPosition(50, 560);
-
     window.clear();
     window.draw(result);
-    window.draw(executionTime);
-    window.draw(complexity);
     window.display();
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(5));
 }
