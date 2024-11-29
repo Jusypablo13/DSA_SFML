@@ -5,21 +5,20 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 class Menu {
 public:
-    Menu(float width, float height);
-    void setOptions(const vector<string>& options);  // Establecer opciones dinámicamente
-    void draw(sf::RenderWindow &window);            // Dibuja el menú
-    void handleInput(sf::RenderWindow &window);     // Maneja la entrada del usuario (teclado y mouse)
-    int getSelectedOption() const;                  // Devuelve la opción seleccionada
+    Menu(const std::vector<std::string>& options, float width, float height);
+
+    void moveUp();
+    void moveDown();
+    int getSelectedOption() const;
+    void draw(sf::RenderWindow& window);
 
 private:
-    int selectedOption;                             // Opción actualmente seleccionada
-    sf::Font font;                                  // Fuente para el texto
-    vector<sf::Text> menuOptions;                   // Opciones del menú
-    float width, height;                            // Dimensiones del menú
+    std::vector<sf::Text> menuOptions;
+    sf::Font font;
+    int selectedOption;
+    float width, height;
 };
 
 #endif

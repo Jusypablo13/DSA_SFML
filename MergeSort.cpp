@@ -3,11 +3,29 @@
 #include <thread>
 #include <chrono>
 
-void MergeSort::sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
-    mergeSort(data, 0, data.size() - 1, window, visualizer);
+void MergeSort::merge(std::vector<int>& data, int left, int mid, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+    std::vector<int> temp(right - left + 1);
+    int i = left, j = mid + 1, k = 0;
+
+    while (i <= mid && j <= right) {
+        if (data[i] <= data[j]) {
+            temp[k++] = data[i++];
+        } else {
+            temp[k++] = data[j++];
+        }
+    }
+
+    while (i <= mid) temp[k++] = data[i++];
+    while (j <= right) temp[k++] = data[j++];
+
+    for (i = left, k = 0; i <= right; ++i, ++k) {
+        data[i] = temp[k];
+        visualizer.displayArray(window, data, i);  // Visualiza los cambios
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Pausa para animación
+    }
 }
 
-void MergeSort::mergeSort(vector<int>& data, int left, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+void MergeSort::mergeSort(std::vector<int>& data, int left, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
     if (left < right) {
         int mid = left + (right - left) / 2;
         mergeSort(data, left, mid, window, visualizer);
@@ -16,34 +34,6 @@ void MergeSort::mergeSort(vector<int>& data, int left, int right, sf::RenderWind
     }
 }
 
-void MergeSort::merge(vector<int>& data, int left, int mid, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    vector<int> L(n1), R(n2);
-    for (int i = 0; i < n1; ++i) L[i] = data[left + i];
-    for (int i = 0; i < n2; ++i) R[i] = data[mid + 1 + i];
-
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            data[k++] = L[i++];
-        } else {
-            data[k++] = R[j++];
-        }
-        visualizer.displayArray(window, data, k);
-        this_thread::sleep_for(chrono::milliseconds(200));
-    }
-
-    while (i < n1) {
-        data[k++] = L[i++];
-        visualizer.displayArray(window, data, k);
-        this_thread::sleep_for(chrono::milliseconds(200));
-    }
-
-    while (j < n2) {
-        data[k++] = R[j++];
-        visualizer.displayArray(window, data, k);
-        this_thread::sleep_for(chrono::milliseconds(200));
-    }
+void MergeSort::sortWithVisualization(std::vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+    mergeSort(data, 0, data.size() - 1, window, visualizer);
 }

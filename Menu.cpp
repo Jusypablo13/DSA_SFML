@@ -1,70 +1,42 @@
 #include "Menu.h"
 
-Menu::Menu(float width, float height) : selectedOption(0), width(width), height(height) {
-    font.loadFromFile("arial.ttf");  // Asegúrate de que el archivo "arial.ttf" esté disponible
-}
+Menu::Menu(const std::vector<std::string>& options, float width, float height)
+    : selectedOption(0), width(width), height(height) {
+    font.loadFromFile("arial.ttf");
 
-void Menu::setOptions(const vector<string>& options) {
-    menuOptions.clear();
-    for (int i = 0; i < options.size(); ++i) {
+    for (size_t i = 0; i < options.size(); ++i) {
         sf::Text text;
         text.setFont(font);
         text.setString(options[i]);
-        text.setCharacterSize(24);
-        text.setPosition(sf::Vector2f(width / 2 - 100, height / (options.size() + 1) * (i + 1)));  // Centrado aproximado
+        text.setCharacterSize(30);
+        text.setFillColor(i == 0 ? sf::Color::Red : sf::Color::White);
+        text.setPosition(width / 2 - 100, height / (options.size() + 1) * (i + 1));
         menuOptions.push_back(text);
     }
 }
 
-void Menu::draw(sf::RenderWindow &window) {
-    for (int i = 0; i < menuOptions.size(); ++i) {
-        if (i == selectedOption) {
-            menuOptions[i].setFillColor(sf::Color::Red);  // Opción seleccionada en rojo
-        } else {
-            menuOptions[i].setFillColor(sf::Color::White);  // Opciones no seleccionadas en blanco
-        }
-        window.draw(menuOptions[i]);  // Dibuja cada opción
+void Menu::moveUp() {
+    if (selectedOption - 1 >= 0) {
+        menuOptions[selectedOption].setFillColor(sf::Color::White);
+        selectedOption--;
+        menuOptions[selectedOption].setFillColor(sf::Color::Red);
     }
 }
 
-void Menu::handleInput(sf::RenderWindow &window) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::KeyPressed) {
-            // Movimiento con teclas de flecha
-            if (event.key.code == sf::Keyboard::Up) {
-                if (selectedOption > 0) {
-                    selectedOption--;
-                }
-            } else if (event.key.code == sf::Keyboard::Down) {
-                if (selectedOption < menuOptions.size() - 1) {
-                    selectedOption++;
-                }
-            }
-        } else if (event.type == sf::Event::MouseMoved) {
-            // Detectar si el mouse pasa sobre una opción
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            for (int i = 0; i < menuOptions.size(); ++i) {
-                sf::FloatRect textBounds = menuOptions[i].getGlobalBounds();
-                if (textBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    selectedOption = i;  // Cambia la opción seleccionada al pasar el mouse
-                }
-            }
-        } else if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                // Detectar si se hace clic en una opción
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                for (int i = 0; i < menuOptions.size(); ++i) {
-                    sf::FloatRect textBounds = menuOptions[i].getGlobalBounds();
-                    if (textBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                        selectedOption = i;  // Cambia la opción seleccionada
-                    }
-                }
-            }
-        }
+void Menu::moveDown() {
+    if (selectedOption + 1 < menuOptions.size()) {
+        menuOptions[selectedOption].setFillColor(sf::Color::White);
+        selectedOption++;
+        menuOptions[selectedOption].setFillColor(sf::Color::Red);
     }
 }
 
 int Menu::getSelectedOption() const {
     return selectedOption;
+}
+
+void Menu::draw(sf::RenderWindow& window) {
+    for (const auto& option : menuOptions) {
+        window.draw(option);
+    }
 }

@@ -3,17 +3,18 @@
 #include <thread>
 #include <chrono>
 
-void SelectionSort::sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
-    int n = data.size();
-    for (int i = 0; i < n - 1; ++i) {
-        int minIndex = i;
-        for (int j = i + 1; j < n; ++j) {
+void SelectionSort::sortWithVisualization(std::vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+    for (size_t i = 0; i < data.size() - 1; ++i) {
+        size_t minIndex = i;
+        for (size_t j = i + 1; j < data.size(); ++j) {
             if (data[j] < data[minIndex]) {
                 minIndex = j;
             }
-            visualizer.displayArray(window, data, j);  // Visualiza el progreso
-            this_thread::sleep_for(chrono::milliseconds(200));
         }
-        swap(data[i], data[minIndex]);
+        if (minIndex != i) {
+            std::swap(data[i], data[minIndex]);
+            visualizer.displayArray(window, data, i);  // Visualiza los cambios
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Pausa para animación
+        }
     }
 }

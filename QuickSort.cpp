@@ -3,11 +3,23 @@
 #include <thread>
 #include <chrono>
 
-void QuickSort::sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
-    quickSort(data, 0, data.size() - 1, window, visualizer);
+int QuickSort::partition(std::vector<int>& data, int low, int high, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+    int pivot = data[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (data[j] < pivot) {
+            std::swap(data[++i], data[j]);
+            visualizer.displayArray(window, data, j);  // Visualiza los cambios
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  // Pausa para animación
+        }
+    }
+    std::swap(data[i + 1], data[high]);
+    visualizer.displayArray(window, data, i + 1);  // Visualiza el paso final
+    return i + 1;
 }
 
-void QuickSort::quickSort(vector<int>& data, int low, int high, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+void QuickSort::quickSort(std::vector<int>& data, int low, int high, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
     if (low < high) {
         int pi = partition(data, low, high, window, visualizer);
         quickSort(data, low, pi - 1, window, visualizer);
@@ -15,18 +27,6 @@ void QuickSort::quickSort(vector<int>& data, int low, int high, sf::RenderWindow
     }
 }
 
-int QuickSort::partition(vector<int>& data, int low, int high, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
-    int pivot = data[high];
-    int i = low - 1;
-
-    for (int j = low; j < high; ++j) {
-        if (data[j] < pivot) {
-            ++i;
-            swap(data[i], data[j]);
-        }
-        visualizer.displayArray(window, data, j);
-        this_thread::sleep_for(chrono::milliseconds(200));
-    }
-    swap(data[i + 1], data[high]);
-    return i + 1;
+void QuickSort::sortWithVisualization(std::vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) {
+    quickSort(data, 0, data.size() - 1, window, visualizer);
 }
