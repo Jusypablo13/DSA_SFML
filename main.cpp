@@ -4,6 +4,7 @@
 #include "Stack.h"
 #include "Queue.h"
 #include "AVLTree.h"
+#include "Dijkstra.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -163,7 +164,7 @@ int main() {
                     }
                     // Non-Linear Structures
                     else if (mainMenuIndex == 3) {
-                        Menu nonLinearMenu({"AVL Tree", "Back"}, window.getSize().x, window.getSize().y);
+                        Menu nonLinearMenu({"AVL Tree", "Dijkstra's Algorithm", "Back"}, window.getSize().x, window.getSize().y);
                         bool inNonLinearMenu = true;
 
                         while (window.isOpen() && inNonLinearMenu) {
@@ -182,7 +183,30 @@ int main() {
 
                                         if (nonLinearMenuIndex == 0) { // AVL Tree
                                             avlTree.interactiveMode(window, font);
-                                        } else if (nonLinearMenuIndex == 1) { // Back
+                                        } else if (nonLinearMenuIndex == 1) { // Dijkstra's Algorithm
+                                            // Lógica para Dijkstra's Algorithm
+                                            Dijkstra dijkstra(5);
+                                            dijkstra.addEdge(0, 1, 4);
+                                            dijkstra.addEdge(1, 2, 1);
+                                            dijkstra.addEdge(2, 3, 4);
+                                            dijkstra.addEdge(3, 4, 2);
+                                            dijkstra.addEdge(0, 2, 5);
+
+                                            auto distances = std::vector<int>(5, std::numeric_limits<int>::max());
+                                            auto parents = dijkstra.calculateShortestPaths(0); // Nodo fuente: 0
+                                            dijkstra.visualizeGraph(window, font, parents, distances);
+
+                                            while (window.isOpen()) {
+                                                sf::Event event;
+                                                while (window.pollEvent(event)) {
+                                                    if (event.type == sf::Event::Closed) {
+                                                        window.close();
+                                                    } else if (event.type == sf::Event::KeyPressed){
+                                                        return 0; // Volver al menú principal
+                                                    }
+                                                }
+                                            }
+                                        } else if (nonLinearMenuIndex == 2) { // Back
                                             inNonLinearMenu = false;
                                         }
                                     } else if (event.key.code == sf::Keyboard::Escape) {
