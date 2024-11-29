@@ -16,6 +16,7 @@ public:
     void addEdge(int u, int v, int weight);
     std::vector<int> calculateShortestPaths(int startNode);
     void visualizeGraph(sf::RenderWindow& window, const sf::Font& font, const std::vector<int>& parents, const std::vector<int>& distances);
+    std::pair<std::vector<int>, std::vector<int>> run(int source);
 };
 
 #endif // DIJKSTRA_H

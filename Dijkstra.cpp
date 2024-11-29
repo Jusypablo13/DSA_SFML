@@ -106,3 +106,27 @@ void Dijkstra::visualizeGraph(sf::RenderWindow& window, const sf::Font& font, co
 
     window.display();
 }
+
+std::pair<std::vector<int>, std::vector<int>> Dijkstra::run(int source) {
+    std::vector<int> distances(numNodes, std::numeric_limits<int>::max());
+    std::vector<int> parents(numNodes, -1);
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> pq;
+
+    distances[source] = 0;
+    pq.push({0, source});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        for (const auto &[v, weight] : graph[u]) {
+            if (distances[u] + weight < distances[v]) {
+                distances[v] = distances[u] + weight;
+                parents[v] = u;
+                pq.push({distances[v], v});
+            }
+        }
+    }
+
+    return {parents, distances};
+}

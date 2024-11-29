@@ -5,6 +5,8 @@
 #include "Queue.h"
 #include "AVLTree.h"
 #include "Dijkstra.h"
+#include "Maze.h"
+#include "GraphTraversal.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -21,6 +23,8 @@ int main() {
     Stack stack;
     Queue queue;
     AVLTree avlTree;
+    Dijkstra dijkstra(5);
+    GraphTraversal graph(10,10);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -164,7 +168,7 @@ int main() {
                     }
                     // Non-Linear Structures
                     else if (mainMenuIndex == 3) {
-                        Menu nonLinearMenu({"AVL Tree", "Dijkstra's Algorithm", "Back"}, window.getSize().x, window.getSize().y);
+                        Menu nonLinearMenu({"AVL Tree", "Dijkstra's Algorithm", "Graph Traversal", "Back"}, window.getSize().x, window.getSize().y);
                         bool inNonLinearMenu = true;
 
                         while (window.isOpen() && inNonLinearMenu) {
@@ -184,16 +188,15 @@ int main() {
                                         if (nonLinearMenuIndex == 0) { // AVL Tree
                                             avlTree.interactiveMode(window, font);
                                         } else if (nonLinearMenuIndex == 1) { // Dijkstra's Algorithm
-                                            // Lógica para Dijkstra's Algorithm
                                             Dijkstra dijkstra(5);
                                             dijkstra.addEdge(0, 1, 4);
                                             dijkstra.addEdge(1, 2, 1);
                                             dijkstra.addEdge(2, 3, 4);
                                             dijkstra.addEdge(3, 4, 2);
                                             dijkstra.addEdge(0, 2, 5);
-
+                                            
                                             auto distances = std::vector<int>(5, std::numeric_limits<int>::max());
-                                            auto parents = dijkstra.calculateShortestPaths(0); // Nodo fuente: 0
+                                            auto parents = dijkstra.calculateShortestPaths(0); //Fuente
                                             dijkstra.visualizeGraph(window, font, parents, distances);
 
                                             while (window.isOpen()) {
@@ -201,12 +204,53 @@ int main() {
                                                 while (window.pollEvent(event)) {
                                                     if (event.type == sf::Event::Closed) {
                                                         window.close();
-                                                    } else if (event.type == sf::Event::KeyPressed){
-                                                        return 0; // Volver al menú principal
+                                                    } else if (event.type == sf::Event::KeyPressed) {
+                                                        return 0; // Salir del algoritmo
                                                     }
                                                 }
                                             }
-                                        } else if (nonLinearMenuIndex == 2) { // Back
+                                        } else if (nonLinearMenuIndex == 2) { // Graph Traversal
+                                            Menu graphMenu({"DFS", "BFS", "Back"}, window.getSize().x, window.getSize().y);
+                                            bool inGraphTraversal = true;
+
+                                            while (window.isOpen() && inGraphTraversal) {
+                                                while (window.pollEvent(event)) {
+                                                    if (event.type == sf::Event::Closed) {
+                                                        window.close();
+                                                    }
+
+                                                    if (event.type == sf::Event::KeyPressed) {
+                                                        if (event.key.code == sf::Keyboard::Up) {
+                                                            graphMenu.moveUp();
+                                                        } else if (event.key.code == sf::Keyboard::Down) {
+                                                            graphMenu.moveDown();
+                                                        } else if (event.key.code == sf::Keyboard::Enter) {
+                                                            int graphMenuIndex = graphMenu.getSelectedIndex();
+
+                                                            if (graphMenuIndex == 0) { // DFS
+                                                                graph.generateMaze();
+                                                                auto dfsOrder = graph.depthFirstSearch(0);
+                                                                graph.visualizeMaze(window, font, dfsOrder, true);
+                                                            } else if (graphMenuIndex == 1) { // BFS
+                                                                graph.generateMaze();
+                                                                auto bfsOrder = graph.breadthFirstSearch(0);
+                                                                graph.visualizeMaze(window, font, bfsOrder, false);
+                                                            } else if (graphMenuIndex == 2) { // Back
+                                                                inGraphTraversal = false;
+                                                            }
+                                                        } else if (event.key.code == sf::Keyboard::Escape) {
+                                                            inGraphTraversal = false; // Salir del submenú
+                                                        }
+                                                    }
+                                                }
+
+                                                if (!inGraphTraversal) break;
+
+                                                window.clear();
+                                                graphMenu.draw(window, font);
+                                                window.display();
+                                            }
+                                        } else if (nonLinearMenuIndex == 3) { // Back
                                             inNonLinearMenu = false;
                                         }
                                     } else if (event.key.code == sf::Keyboard::Escape) {
