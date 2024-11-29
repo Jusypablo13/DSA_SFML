@@ -2,13 +2,16 @@
 #define ALGORITHM_H
 
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
-class Algorithm{
-    public:
-        virtual ~Algorithm() = default; 
-        virtual void sort(vector<int> &data) = 0;
+class AlgorithmVisualizer;  // Forward declaration
+
+class Algorithm {
+public:
+    virtual ~Algorithm() = default;
+    virtual void sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) = 0;
 };
 
 #endif // ALGORITHM_H

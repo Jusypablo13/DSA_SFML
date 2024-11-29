@@ -4,8 +4,8 @@
 #include <vector>
 
 class BinarySearch {
-    public:
-        int search(const std::vector<int> &data, int target);
+public:
+    int search(const std::vector<int> &data, int target);
 };
 
-#endif // BINARYSEARCH_H
+#endif

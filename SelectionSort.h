@@ -1,11 +1,11 @@
-#ifndef BUBBLESORT_H
-#define BUBBLESORT_H
+#ifndef SELECTIONSORT_H
+#define SELECTIONSORT_H
 
 #include "Algorithm.h"
 
-class BubbleSort : public Algorithm {
+class SelectionSort : public Algorithm {
 public:
     void sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) override;
 };
 
-#endif // BUBBLESORT_H
+#endif // SELECTIONSORT_H

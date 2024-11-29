@@ -4,12 +4,12 @@
 #include "Algorithm.h"
 
 class MergeSort : public Algorithm {
-    private:
-        void merge(std::vector<int> &data, int low, int mid, int high);
-        void mergeSort(std::vector<int> &data, int low, int high);
+public:
+    void sortWithVisualization(vector<int>& data, sf::RenderWindow& window, AlgorithmVisualizer& visualizer) override;
 
-    public:
-        void sort(std::vector<int> &data) override;
+private:
+    void mergeSort(vector<int>& data, int left, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer);
+    void merge(vector<int>& data, int left, int mid, int right, sf::RenderWindow& window, AlgorithmVisualizer& visualizer);
 };
 
 #endif // MERGESORT_H
